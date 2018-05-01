@@ -58,21 +58,21 @@ extern uint32 mdp_intr_mask;
 #undef BIT
 #endif
 
-#define BIT(x)  (1<<(x))
+#define BIT(x)	(1<<(x))
 
-#define MDPOP_NOP               0
-#define MDPOP_LR                BIT(0)	/* left to right flip */
-#define MDPOP_UD                BIT(1)	/* up and down flip */
-#define MDPOP_ROT90             BIT(2)	/* rotate image to 90 degree */
-#define MDPOP_ROT180            (MDPOP_UD|MDPOP_LR)
-#define MDPOP_ROT270            (MDPOP_ROT90|MDPOP_UD|MDPOP_LR)
-#define MDPOP_ASCALE            BIT(7)
-#define MDPOP_ALPHAB            BIT(8)	/* enable alpha blending */
-#define MDPOP_TRANSP            BIT(9)	/* enable transparency */
-#define MDPOP_DITHER            BIT(10)	/* enable dither */
+#define MDPOP_NOP		0
+#define MDPOP_LR		BIT(0)	/* left to right flip */
+#define MDPOP_UD		BIT(1)	/* up and down flip */
+#define MDPOP_ROT90		BIT(2)	/* rotate image to 90 degree */
+#define MDPOP_ROT180		(MDPOP_UD|MDPOP_LR)
+#define MDPOP_ROT270		(MDPOP_ROT90|MDPOP_UD|MDPOP_LR)
+#define MDPOP_ASCALE		BIT(7)
+#define MDPOP_ALPHAB		BIT(8)	/* enable alpha blending */
+#define MDPOP_TRANSP		BIT(9)	/* enable transparency */
+#define MDPOP_DITHER		BIT(10)	/* enable dither */
 #define MDPOP_SHARPENING	BIT(11) /* enable sharpening */
 #define MDPOP_BLUR		BIT(12) /* enable blur */
-#define MDPOP_FG_PM_ALPHA       BIT(13)
+#define MDPOP_FG_PM_ALPHA	BIT(13)
 #define MDP_ALLOC(x)  kmalloc(x, GFP_KERNEL)
 
 struct mdp_buf_type {
@@ -117,7 +117,7 @@ typedef struct mdpImg_ {
 	uint32 mdpOp;		/* image opertion (rotation,flip up/down, alpha/tp) */
 	uint32 tpVal;		/* transparency color */
 	uint32 alpha;		/* alpha percentage 0%(0x0) ~ 100%(0x100) */
-	int    sp_value;        /* sharpening strength */
+	int    sp_value;	/* sharpening strength */
 } MDPIMG;
 
 #define MDP_OUTP(addr, data) outpdw((addr), (data))
@@ -174,11 +174,11 @@ typedef enum {
 #endif
 
 /* SHIM Q Factor */
-#define PHI_Q_FACTOR          29
-#define PQF_PLUS_5            (PHI_Q_FACTOR + 5)	/* due to 32 phases */
-#define PQF_PLUS_4            (PHI_Q_FACTOR + 4)
-#define PQF_PLUS_2            (PHI_Q_FACTOR + 2)	/* to get 4.0 */
-#define PQF_MINUS_2           (PHI_Q_FACTOR - 2)	/* to get 0.25 */
+#define PHI_Q_FACTOR	      29
+#define PQF_PLUS_5	      (PHI_Q_FACTOR + 5)	/* due to 32 phases */
+#define PQF_PLUS_4	      (PHI_Q_FACTOR + 4)
+#define PQF_PLUS_2	      (PHI_Q_FACTOR + 2)	/* to get 4.0 */
+#define PQF_MINUS_2	      (PHI_Q_FACTOR - 2)	/* to get 0.25 */
 #define PQF_PLUS_5_PLUS_2     (PQF_PLUS_5 + 2)
 #define PQF_PLUS_5_MINUS_2    (PQF_PLUS_5 - 2)
 
@@ -310,23 +310,23 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define ACTIVE_START_Y_EN BIT(31)
 #define ACTIVE_HIGH 0
 #define ACTIVE_LOW 1
-#define MDP_DMA_S_DONE  BIT(2)
-#define MDP_DMA_E_DONE  BIT(3)
+#define MDP_DMA_S_DONE	BIT(2)
+#define MDP_DMA_E_DONE	BIT(3)
 #define LCDC_FRAME_START    BIT(15)
-#define LCDC_UNDERFLOW      BIT(16)
+#define LCDC_UNDERFLOW	    BIT(16)
 
 #ifdef CONFIG_FB_MSM_MDP22
-#define MDP_DMA_P_DONE 	BIT(2)
+#define MDP_DMA_P_DONE	BIT(2)
 #else
-#define MDP_DMA_P_DONE 	BIT(14)
+#define MDP_DMA_P_DONE	BIT(14)
 #endif
 
-#define MDP_PPP_DONE 				BIT(0)
+#define MDP_PPP_DONE				BIT(0)
 #define TV_OUT_DMA3_DONE    BIT(6)
 #define TV_ENC_UNDERRUN     BIT(7)
-#define MDP_PRIM_RDPTR      BIT(8)
+#define MDP_PRIM_RDPTR	    BIT(8)
 #define TV_OUT_DMA3_START   BIT(13)
-#define MDP_HIST_DONE       BIT(20)
+#define MDP_HIST_DONE	    BIT(20)
 
 /*MDP4 MDP histogram interrupts*/
 /*note: these are only applicable on MDP4+ targets*/
@@ -353,13 +353,13 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 			TV_ENC_UNDERRUN)
 #endif
 
-#define MDP_TOP_LUMA       16
-#define MDP_TOP_CHROMA     0
+#define MDP_TOP_LUMA	   16
+#define MDP_TOP_CHROMA	   0
 #define MDP_BOTTOM_LUMA    19
 #define MDP_BOTTOM_CHROMA  3
-#define MDP_LEFT_LUMA      22
+#define MDP_LEFT_LUMA	   22
 #define MDP_LEFT_CHROMA    6
-#define MDP_RIGHT_LUMA     25
+#define MDP_RIGHT_LUMA	   25
 #define MDP_RIGHT_CHROMA   9
 
 #define CLR_G 0x0
@@ -541,11 +541,11 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define PPP_OP_BG_CHROMA_SITE_OFFSITE BIT(27)
 #define PPP_OP_DEINT_EN BIT(28)
 
-#define PPP_BLEND_BG_USE_ALPHA_SEL      (1 << 0)
-#define PPP_BLEND_BG_ALPHA_REVERSE      (1 << 3)
-#define PPP_BLEND_BG_SRCPIXEL_ALPHA     (0 << 1)
-#define PPP_BLEND_BG_DSTPIXEL_ALPHA     (1 << 1)
-#define PPP_BLEND_BG_CONSTANT_ALPHA     (2 << 1)
+#define PPP_BLEND_BG_USE_ALPHA_SEL	(1 << 0)
+#define PPP_BLEND_BG_ALPHA_REVERSE	(1 << 3)
+#define PPP_BLEND_BG_SRCPIXEL_ALPHA	(0 << 1)
+#define PPP_BLEND_BG_DSTPIXEL_ALPHA	(1 << 1)
+#define PPP_BLEND_BG_CONSTANT_ALPHA	(2 << 1)
 #define PPP_BLEND_BG_CONST_ALPHA_VAL(x) ((x) << 24)
 
 #define PPP_OP_DST_RGB 0
@@ -611,26 +611,26 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define DMA_DSTC1B_5BITS BIT(2)
 #define DMA_DSTC2R_5BITS BIT(4)
 
-#define DMA_PACK_TIGHT                      BIT(6)
-#define DMA_PACK_LOOSE                      0
-#define DMA_PACK_ALIGN_LSB                  0
+#define DMA_PACK_TIGHT			    BIT(6)
+#define DMA_PACK_LOOSE			    0
+#define DMA_PACK_ALIGN_LSB		    0
 /*
  * use DMA_PACK_ALIGN_MSB if the upper 6 bits from 8 bits output
  * from LCDC block maps into 6 pins out to the panel
  */
-#define DMA_PACK_ALIGN_MSB                  BIT(7)
+#define DMA_PACK_ALIGN_MSB		    BIT(7)
 #define DMA_PACK_PATTERN_RGB \
        (MDP_GET_PACK_PATTERN(0, CLR_R, CLR_G, CLR_B, 2)<<8)
 #define DMA_PACK_PATTERN_BGR \
        (MDP_GET_PACK_PATTERN(0, CLR_B, CLR_G, CLR_R, 2)<<8)
-#define DMA_OUT_SEL_AHB                     0
-#define DMA_OUT_SEL_LCDC                    BIT(20)
-#define DMA_IBUF_FORMAT_RGB888              0
+#define DMA_OUT_SEL_AHB			    0
+#define DMA_OUT_SEL_LCDC		    BIT(20)
+#define DMA_IBUF_FORMAT_RGB888		    0
 #define DMA_IBUF_FORMAT_xRGB8888_OR_ARGB8888  BIT(26)
 
 #ifdef CONFIG_FB_MSM_MDP303
-#define DMA_OUT_SEL_DSI_CMD                  BIT(19)
-#define DMA_OUT_SEL_DSI_VIDEO               (3 << 19)
+#define DMA_OUT_SEL_DSI_CMD		     BIT(19)
+#define DMA_OUT_SEL_DSI_VIDEO		    (3 << 19)
 #endif
 
 #ifdef CONFIG_FB_MSM_MDP22
@@ -646,17 +646,17 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define DMA_IBUF_FORMAT_RGB888_OR_ARGB8888 0
 #define DMA_IBUF_NONCONTIGUOUS BIT(21)
 #else
-#define DMA_OUT_SEL_MDDI                    BIT(19)
-#define DMA_AHBM_LCD_SEL_PRIMARY            0
-#define DMA_AHBM_LCD_SEL_SECONDARY          0
-#define DMA_IBUF_C3ALPHA_EN                 0
+#define DMA_OUT_SEL_MDDI		    BIT(19)
+#define DMA_AHBM_LCD_SEL_PRIMARY	    0
+#define DMA_AHBM_LCD_SEL_SECONDARY	    0
+#define DMA_IBUF_C3ALPHA_EN		    0
 #define DMA_BUF_FORMAT_RGB565		BIT(25)
-#define DMA_DITHER_EN                       BIT(24)	/* dma_p */
-#define DMA_DEFLKR_EN                       BIT(24)	/* dma_e */
+#define DMA_DITHER_EN			    BIT(24)	/* dma_p */
+#define DMA_DEFLKR_EN			    BIT(24)	/* dma_e */
 #define DMA_MDDI_DMAOUT_LCD_SEL_PRIMARY     0
 #define DMA_MDDI_DMAOUT_LCD_SEL_SECONDARY   0
 #define DMA_MDDI_DMAOUT_LCD_SEL_EXTERNAL    0
-#define DMA_IBUF_FORMAT_RGB565              BIT(25)
+#define DMA_IBUF_FORMAT_RGB565		    BIT(25)
 #define DMA_IBUF_NONCONTIGUOUS 0
 #endif
 
@@ -679,9 +679,9 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define MDP_EBI2_LCD1		(msm_mdp_base + 0x0064)
 #define MDP_EBI2_PORTMAP_MODE	(msm_mdp_base + 0x0070)
 
-#define MDP_DMA_P_HIST_INTR_STATUS 	(msm_mdp_base + 0x95014)
-#define MDP_DMA_P_HIST_INTR_CLEAR 	(msm_mdp_base + 0x95018)
-#define MDP_DMA_P_HIST_INTR_ENABLE 	(msm_mdp_base + 0x9501C)
+#define MDP_DMA_P_HIST_INTR_STATUS	(msm_mdp_base + 0x95014)
+#define MDP_DMA_P_HIST_INTR_CLEAR	(msm_mdp_base + 0x95018)
+#define MDP_DMA_P_HIST_INTR_ENABLE	(msm_mdp_base + 0x9501C)
 
 #else
 #define MDP_INTR_ENABLE		(msm_mdp_base + 0x0020)
@@ -696,7 +696,7 @@ extern struct mdp_hist_mgmt *mdp_hist_mgmt_array[];
 #define MDP_DMA_P_HIST_INTR_ENABLE	(msm_mdp_base + 0x9401C)
 #endif
 
-#define MDP_FULL_BYPASS_WORD43  (msm_mdp_base + 0x101ac)
+#define MDP_FULL_BYPASS_WORD43	(msm_mdp_base + 0x101ac)
 
 #define MDP_CSC_PFMVn(n)	(msm_mdp_base + 0x40400 + 4 * (n))
 #define MDP_CSC_PRMVn(n)	(msm_mdp_base + 0x40440 + 4 * (n))
@@ -930,9 +930,9 @@ static inline void mdp_vid_quant_set(void)
 #endif
 
 #ifdef CONFIG_UPDATE_LCDC_LUT
-#define R_MASK    0x00ff0000
-#define G_MASK    0x000000ff
-#define B_MASK    0x0000ff00
+#define R_MASK	  0x00ff0000
+#define G_MASK	  0x000000ff
+#define B_MASK	  0x0000ff00
 #define R_SHIFT   16
 #define G_SHIFT   0
 #define B_SHIFT   8
@@ -952,6 +952,6 @@ int mdp_preset_lut_update_lcdc(struct fb_cmap *cmap, uint32_t *internal_lut);
 
 struct lut_reg_pair {
 	void*reg;
-	unsigned val;
+	uint32_t val;
 };
 #endif /* MDP_H */

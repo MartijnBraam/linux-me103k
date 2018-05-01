@@ -47,6 +47,17 @@ static const struct i2c_device_id rt8555_id[] = {
 	{ }
 };
 
+static int rt8555_status_show(struct device* dev, struct device_attribute*attr, char* buf)
+{
+	int rt8555_status = 0;
+	if (rt8555_read_reg(bl_i2c_client, 0x00) >= 0) {
+		rt8555_status = 1;
+	}
+	return sprintf(buf, "%d\n", rt8555_status);
+}
+
+static DEVICE_ATTR(rt8555_status, S_IRUGO, rt8555_status_show, NULL);
+
 /* This function get called whenever ic is waked up */
 static int rt8555_init_seq(void)
 {
@@ -54,7 +65,7 @@ static int rt8555_init_seq(void)
 	msleep(50);
 	if (bl_i2c_client) {
 		pr_debug("gpio 30 %d", gpio_get_value(gpio_LCD_BL_EN));
-		rt8555_write_reg(bl_i2c_client, 0x00, 0x5c);
+		rt8555_write_reg(bl_i2c_client, 0x00, 0xdd);
 		pr_debug("rt8555 0x00 %d\n", rt8555_read_reg(bl_i2c_client, 0x00));
 		rt8555_write_reg(bl_i2c_client, 0x01, 0x07);
 		pr_debug("rt8555 0x01 %d\n", rt8555_read_reg(bl_i2c_client, 0x01));
@@ -81,6 +92,7 @@ static int rt8555_probe(struct i2c_client*client,
 		return -ENODEV;
 	}
 
+	device_create_file(&(client->dev), &dev_attr_rt8555_status);
 	return rt8555_init_seq();
 }
 
@@ -160,7 +172,7 @@ static void lvds_chimei_set_backlight(struct msm_fb_data_type *mfd)
 
 	if (bl_lpm) {
 		if (mfd->bl_level) {
-			printk("%s %d\n", __func__, mfd->bl_level);
+			gpio_set_value_cansleep(gpio_LCD_BL_EN, 1);
 			if (!bl_enable_sleep_control) {
 				msleep(200);
 				if (rt8555_init_seq()) {
@@ -186,6 +198,7 @@ static void lvds_chimei_set_backlight(struct msm_fb_data_type *mfd)
 				pr_debug("%s: sleep 2 when resume\n", __func__);
 			}
 		} else {
+			gpio_set_value_cansleep(gpio_LCD_BL_EN, 0);
 			ret = pwm_config_in_p1us_unit(bl_lpm, PWM_PERIOD_p1USEC *
 				mfd->bl_level/ PWM_LEVEL, PWM_PERIOD_p1USEC);
 			if (ret) {
@@ -246,9 +259,9 @@ static void lvds_chimei_set_recovery_backlight(struct msm_fb_data_type *mfd)
 }
 
 static struct platform_driver this_driver = {
-	.probe  = lvds_chimei_probe,
+	.probe	= lvds_chimei_probe,
 	.driver = {
-		.name   = "lvds_chimei_wxga",
+		.name	= "lvds_chimei_wxga",
 	},
 };
 
@@ -260,7 +273,7 @@ static struct msm_fb_panel_data lvds_chimei_panel_data = {
 };
 
 static struct platform_device this_device = {
-	.name   = "lvds_chimei_wxga",
+	.name	= "lvds_chimei_wxga",
 	.id	= 1,
 	.dev	= {
 		.platform_data = &lvds_chimei_panel_data,
@@ -329,7 +342,7 @@ static int __init lvds_chimei_wxga_init(void)
 	hrtimer_init(&boot_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	boot_timer.function = boot_event_timer_func;
 	hrtimer_start(&boot_timer,
-			ktime_set(5, 500000000), HRTIMER_MODE_REL);
+			ktime_set(7, 0), HRTIMER_MODE_REL);
 	pr_info("%s ---\n", __func__);
 	return ret;
 }

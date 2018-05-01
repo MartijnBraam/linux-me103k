@@ -873,8 +873,8 @@ static void hdmi_msm_hdcp_work(struct work_struct *work)
 	if (external_common_state->hpd_state &&
 	    !(hdmi_msm_state->full_auth_done)) {
 		mutex_unlock(&external_common_state_hpd_mutex);
-		if (hdmi_msm_state->reauth == TRUE/* &&
-			!hdmi_msm_state->panel_power_on*/) {
+		if (hdmi_msm_state->reauth == TRUE &&
+			!hdmi_msm_state->panel_power_on) {
 			DEV_DBG("%s: Starting HDCP re-authentication\n",
 					__func__);
 			hdmi_msm_turn_on();
@@ -1234,6 +1234,7 @@ static boolean hdmi_msm_is_dvi_mode(void)
 
 void hdmi_msm_set_mode(boolean power_on)
 {
+#if 0
 	uint32 reg_val = 0;
 	if (power_on) {
 		/* ENABLE */
@@ -1262,7 +1263,8 @@ void hdmi_msm_set_mode(boolean power_on)
 	HDMI_OUTP(0x0000, reg_val);
 	DEV_DBG("HDMI Core: %s, HDMI_CTRL=0x%08x\n",
 			power_on ? "Enable" : "Disable", reg_val);
-#if 0
+#endif
+
 	uint32 reg_val = 0;
 	if (power_on) {
 		/* ENABLE */
@@ -1278,7 +1280,6 @@ void hdmi_msm_set_mode(boolean power_on)
 	HDMI_OUTP(0x0000, reg_val);
 	DEV_DBG("HDMI Core: %s, HDMI_CTRL=0x%08x\n",
 	power_on ? "Enable" : "Disable", reg_val);
-#endif
 }
 
 static void msm_hdmi_init_ddc(void)

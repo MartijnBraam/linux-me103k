@@ -106,7 +106,7 @@
 #define MSM_ION_MFC_META_SIZE  0x40000 /* 256 Kbytes */
 #define MSM_CONTIG_MEM_SIZE  0x65000
 #ifdef CONFIG_MSM_IOMMU
-#define MSM_ION_MM_SIZE		0x4800000
+#define MSM_ION_MM_SIZE		0x5C00000
 #define MSM_ION_SF_SIZE		0
 #define MSM_ION_QSECOM_SIZE	0x780000 /* (7.5MB) */
 #define MSM_ION_HEAP_NUM	8
@@ -2859,7 +2859,7 @@ static struct gpio_keys_button asustek_keys[] = {
 		.desc           = "volume_up_key",
 		.active_low     = 1,
 		.type		= EV_KEY,
-		.wakeup		= 0,
+		.wakeup		= 1,
 		.debounce_interval = 5,
 	},
 	{
@@ -2868,7 +2868,7 @@ static struct gpio_keys_button asustek_keys[] = {
 		.desc           = "volume_down_key",
 		.active_low     = 1,
 		.type		= EV_KEY,
-		.wakeup		= 0,
+		.wakeup		= 1,
 		.debounce_interval = 5,
 	},
 };
@@ -2933,14 +2933,12 @@ static struct i2c_registry apq8064_i2c_devices[] __initdata = {
 		rt5888_backlight_i2c_info,
 		ARRAY_SIZE(rt5888_backlight_i2c_info),
 	},
-
 	{
 		I2C_SURF | I2C_LIQUID,
 		APQ_8064_GSBI3_QUP_I2C_BUS_ID,
 		mxt_device_info,
 		ARRAY_SIZE(mxt_device_info),
 	},
-
 	{
 		I2C_FFA,
 		APQ_8064_GSBI3_QUP_I2C_BUS_ID,

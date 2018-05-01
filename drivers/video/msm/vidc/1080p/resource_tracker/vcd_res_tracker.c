@@ -48,6 +48,7 @@ static struct res_trk_vidc_mmu_clk vidc_mmu_clks[] = {
 	{"smmu_iface_clk"}
 };
 
+struct firmware *vidc_fw_video = NULL;
 unsigned char *vidc_video_codec_fw;
 u32 vidc_video_codec_fw_size;
 static u32 res_trk_get_clk(void);
@@ -710,6 +711,7 @@ u32 res_trk_download_firmware(void)
 	}
 	vidc_video_codec_fw = (unsigned char *)fw_video->data;
 	vidc_video_codec_fw_size = (u32) fw_video->size;
+	vidc_fw_video = (struct firmware *) fw_video;
 bail_out:
 	mutex_unlock(&resource_context.lock);
 	return status;

@@ -2,7 +2,7 @@
  *
  * MSM MDP Interface (used by framebuffer core)
  *
- * Copyright (c) 2007-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2007-2014, The Linux Foundation. All rights reserved.
  * Copyright (C) 2007 Google Incorporated
  *
  * This software is licensed under the terms of the GNU General Public
@@ -562,6 +562,11 @@ static int mdp_lut_hw_update(struct fb_cmap *cmap)
 	c[1] = cmap->blue;
 	c[2] = cmap->red;
 
+	if (cmap->start > MDP_HIST_LUT_SIZE || cmap->len > MDP_HIST_LUT_SIZE ||
+			(cmap->start + cmap->len > MDP_HIST_LUT_SIZE)) {
+		pr_err("mdp_lut_hw_update invalid arguments\n");
+		return -EINVAL;
+	}
 	for (i = 0; i < cmap->len; i++) {
 		if (copy_from_user(&r, cmap->red++, sizeof(r)) ||
 		    copy_from_user(&g, cmap->green++, sizeof(g)) ||
@@ -2332,7 +2337,7 @@ static void mdp_drv_init(void)
 #ifdef SPLASH_SCREEN_BUFFER_FOR_1080P
 struct disp_logo_buffer {
 	dma_addr_t phys;
-	void       *data;
+	void	   *data;
 	uint32_t   used;
 	uint32_t   size;/* size of buffer */
 	struct ion_handle *handle;
@@ -2447,7 +2452,7 @@ static int mdp_on(struct platform_device *pdev)
 	int ret = 0;
 	struct msm_fb_data_type *mfd;
 	int i;
-	size_t j;
+	size_t j, lshift;
 
 	mfd = platform_get_drvdata(pdev);
 
@@ -2517,8 +2522,15 @@ static int mdp_on(struct platform_device *pdev)
 	if (g_lut_cache_size) {
 		pr_debug("restore lut registers.\n");
 		mdp_pipe_ctrl(MDP_CMD_BLOCK, MDP_BLOCK_POWER_ON, FALSE);
-		for (j = 0; j < g_lut_cache_size; ++j)
-			outpdw(g_lut_cache[j].reg, g_lut_cache[j].val);
+		for (j = 0; j < g_lut_cache_size - 1; ++j) {
+			if (g_lut_cache[j].reg)
+				outpdw(g_lut_cache[j].reg, g_lut_cache[j].val);
+		}
+		/* Enable bit stored at last element */
+		lshift = (g_lut_cache[j].val >> 16);
+		outpdw(g_lut_cache[j].reg,
+				(((0x1 & g_lut_cache[j].val) << lshift) |
+				 (inpdw(g_lut_cache[j].reg) & ~(0x1 << lshift))));
 		mdp_pipe_ctrl(MDP_CMD_BLOCK, MDP_BLOCK_POWER_OFF,FALSE);
 	}
 
@@ -2953,7 +2965,7 @@ static int mdp_probe(struct platform_device *pdev)
 		mdp_init_pdev = pdev;
 		mdp_pdata = pdev->dev.platform_data;
 
-		size =  resource_size(&pdev->resource[0]);
+		size = resource_size(&pdev->resource[0]);
 		msm_mdp_base = ioremap(pdev->resource[0].start, size);
 
 		MSM_FB_DEBUG("MDP HW Base phy_Address = 0x%x virt = 0x%x\n",
@@ -3382,6 +3394,8 @@ static int mdp_probe(struct platform_device *pdev)
 			pdata->off = mdp4_overlay_writeback_off;
 			mfd->dma_fnc = mdp4_writeback_overlay;
 			mfd->dma = &dma_wb_data;
+			mutex_init(&mfd->writeback_mutex);
+			mutex_init(&mfd->unregister_mutex);
 			mdp4_display_intf_sel(EXTERNAL_INTF_SEL, DTV_INTF);
 		}
 		break;

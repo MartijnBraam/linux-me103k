@@ -131,6 +131,7 @@ struct ug31xx_gauge {
 	int batt_status;
 	int batt_cycle_count;
 	int batt_ntc_sts;
+	int batt_zero_count;
 	int board_offset;
 	char effective_board_offset[8];
 	char daemon_ver[UG31XX_USER_DAEMON_VER_LENGTH];
@@ -1654,7 +1655,8 @@ int ug31xx_cable_callback(unsigned char usb_cable_state)
 	if(old_cable_status != cur_cable_status)
 	{
 		cable_status_changed = CABLE_STATUS_CHANGE_RELEASE_COUNT;
-		GAUGE_notice("[%s] Cable status changed (%d -> %d)\n", __func__,
+		wake_lock_timeout(&ug31->batt_wake_lock, 5*HZ);
+		GAUGE_notice("[%s] Cable status changed (%d -> %d), hold 5secs wakelock\n", __func__,
 					old_cable_status,
 					cur_cable_status)
 	}
@@ -1937,6 +1939,17 @@ static void show_update_batt_status(void)
 		ug31_module.get_version(),
 		ug31->daemon_ver,
 		ug31->daemon_uevent_count);
+
+	if ((ug31->batt_capacity == 0) && (cur_cable_status != UG31XX_NO_CABLE)) {
+		if (ug31->batt_zero_count >= 5) {
+			ug31->batt_zero_count = 0;
+			GAUGE_notice("shutdown device due to low capacity\n");
+			ug31xx_cable_callback(UG31XX_NO_CABLE);
+		} else
+			GAUGE_notice("batt_zero_count = %d\n", ug31->batt_zero_count);
+			ug31->batt_zero_count++;
+	} else
+		ug31->batt_zero_count = 0;
 }
 
 static void adjust_cell_table(void)
@@ -4064,7 +4077,7 @@ err2:
 err1:
 	return ret;
 }
-late_initcall(ug31xx_i2c_init);
+module_init(ug31xx_i2c_init);
 
 static void __exit ug31xx_i2c_exit(void)
 {

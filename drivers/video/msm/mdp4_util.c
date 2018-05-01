@@ -325,7 +325,7 @@ void mdp4_ebi2_lcd_setup(int lcd, ulong base, int ystride)
 
 void mdp4_mddi_setup(int mddi, unsigned long id)
 {
-	ulong 	bits;
+	ulong	bits;
 
 	if (mddi == MDDI_EXTERNAL_SET)
 		bits = 0x02;
@@ -437,11 +437,11 @@ void mdp4_hw_init(void)
 
 	/* system interrupts */
 
-	bits =  mdp_intr_mask;
+	bits = mdp_intr_mask;
 	outpdw(MDP_BASE + 0x0050, bits);/* enable specififed interrupts */
 
-	/* For the max read pending cmd config below, if the MDP clock     */
-	/* is less than the AXI clock, then we must use 3 pending          */
+	/* For the max read pending cmd config below, if the MDP clock	   */
+	/* is less than the AXI clock, then we must use 3 pending	   */
 	/* pending requests.  Otherwise, we should use 8 pending requests. */
 	/* In the future we should do this detection automatically.	   */
 
@@ -609,7 +609,7 @@ irqreturn_t mdp4_isr(int irq, void *ptr)
 			else if (panel & MDP4_PANEL_DSI_VIDEO)
 				mdp4_overlay0_done_dsi_video(0);
 #endif
-		} else {        /* MDDI, DSI_CMD  */
+		} else {	/* MDDI, DSI_CMD  */
 #ifdef CONFIG_FB_MSM_MIPI_DSI
 			if (panel & MDP4_PANEL_DSI_CMD)
 				mdp4_overlay0_done_dsi_cmd(0);
@@ -1316,7 +1316,7 @@ void mdp4_mixer_blend_init(mixer_num)
 	unsigned char *overlay_base;
 	int off;
 
-	if (mixer_num) 	/* mixer number, /dev/fb0, /dev/fb1 */
+	if (mixer_num)	/* mixer number, /dev/fb0, /dev/fb1 */
 		overlay_base = MDP_BASE + MDP4_OVERLAYPROC1_BASE;/* 0x18000 */
 	else
 		overlay_base = MDP_BASE + MDP4_OVERLAYPROC0_BASE;/* 0x10000 */
@@ -1395,10 +1395,10 @@ struct mdp_csc_cfg mdp_csc_convert[4] = {
 
 void mdp4_vg_csc_restore(void)
 {
-        int i;
+	int i;
 
-        for (i = 0; i < CSC_MAX_BLOCKS; i++)
-                mdp4_csc_config(&csc_cfg_matrix[i]);
+	for (i = 0; i < CSC_MAX_BLOCKS; i++)
+		mdp4_csc_config(&csc_cfg_matrix[i]);
 }
 
 
@@ -1965,7 +1965,7 @@ void mdp4_mixer_gc_lut_setup(int mixer_num)
 	char val;
 	int i, off;
 
-	if (mixer_num) 	/* mixer number, /dev/fb0, /dev/fb1 */
+	if (mixer_num)	/* mixer number, /dev/fb0, /dev/fb1 */
 		base = MDP_BASE + MDP4_OVERLAYPROC1_BASE;/* 0x18000 */
 	else
 		base = MDP_BASE + MDP4_OVERLAYPROC0_BASE;/* 0x10000 */
@@ -2859,10 +2859,11 @@ int mdp4_argc_cfg(struct mdp_pgc_lut_data *pgc_ptr)
 			outpdw(pgc_enable_offset, (inpdw(pgc_enable_offset) &
 							~(0x1<<lshift_bits)) |
 				((0x1 & pgc_ptr->flags) << lshift_bits));
-			g_lut_cache[g_lut_cache_size - 1].reg = pgc_enable_offset;
-			g_lut_cache[g_lut_cache_size - 1].val = inpdw(pgc_enable_offset);
 			mdp_pipe_ctrl(MDP_CMD_BLOCK, MDP_BLOCK_POWER_OFF,
 									FALSE);
+			g_lut_cache[g_lut_cache_size - 1].reg = pgc_enable_offset;
+			g_lut_cache[g_lut_cache_size - 1].val =
+				(0x1 & pgc_ptr->flags) | (lshift_bits << 16);
 		}
 	}
 
