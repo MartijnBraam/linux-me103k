@@ -269,7 +269,7 @@ static struct msm_panel_common_pdata mdp_pdata = {
 	.splash_screen_addr = 0x00,
 	.splash_screen_size = 0x00,
 	.cont_splash_enabled = 0x01,
-	.mdp_iommu_split_domain = 1, // Leopardcat = 0x00, see apq8064_init_fb.
+	.mdp_iommu_split_domain = 1,
 };
 
 void __init apq8064_mdp_writeback(struct memtype_reserve* reserve_table)
@@ -1121,7 +1121,6 @@ void __init apq8064_init_fb(void)
 	if (machine_is_apq8064_leopardcat()) {
 		printk("Leopardcat device, register lvds_chimei_panel_device.\n");
 		platform_device_register(&lvds_chimei_panel_device);
-		mdp_pdata.mdp_iommu_split_domain = 0x00;
 		mdp_pdata.mdp_max_bw = 3000000000UL,
 		mdp_pdata.mdp_bw_ab_factor = 200,
 		mdp_pdata.mdp_bw_ib_factor = 250,

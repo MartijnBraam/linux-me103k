@@ -417,9 +417,9 @@ static unsigned char i_isTP_Updated = 0;
 static unsigned char i_CTPM_FW[]=
 {
 #ifdef	TOUCH_SECOND_SOURCE
-#include "ME103K_E0120_00_00.h"
+#include "ME103K_E0120_00_04.h"
 #else
-#include "TF303K_E0111_00_1D_20140807.h" //Paul Check
+#include "TF303K_E0111_00_1F_20141030.h"
 #endif
 };
 #endif
@@ -3355,17 +3355,6 @@ static int i_update_func()
 {
     unsigned char* ImageBuffer = i_CTPM_FW;
     int fullFileLength = sizeof(i_CTPM_FW); //Paul Check
-
-	/* force update firmware if use second source IC */
-	if (asustek_get_tp_type() == TP_IC_TYPE_B) {
-		if (fts_ctpm_fw_upgrade_with_i_file() == HX_UPDATE_FAIL)
-			printk(KERN_ERR "TP upgrade error\n");
-		else {
-			printk(KERN_INFO "TP upgrade OK\n");
-			fw_update_OK = true;
-		}
-		return 0;
-	}
 
     if (i_Check_FW_Version() > 0 || himax_calculateChecksum(ImageBuffer, fullFileLength) == 0 )
     {

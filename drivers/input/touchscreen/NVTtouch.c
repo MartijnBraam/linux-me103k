@@ -51,8 +51,8 @@
 
 #if UPDATE_FIRMWARE
 #include "Wintek101_ASUSME102A_N327_V116_20131025.h" //for wintek tp
-#include "O-Film101_ASUSME103K_N327_V05_20140915.h"
-#define  LATEST_FW	5
+#include "O-Film101_ASUSME103K_N327_V08_20141114.h"
+#define  LATEST_FW	8
 #endif
 
 

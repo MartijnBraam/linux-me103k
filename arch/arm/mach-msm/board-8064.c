@@ -303,7 +303,7 @@ static struct ion_cp_heap_pdata cp_mm_apq8064_ion_pdata = {
 	.reusable = FMEM_ENABLED,
 	.mem_is_fmem = FMEM_ENABLED,
 	.fixed_position = FIXED_MIDDLE,
-	.is_cma = 1,
+	.is_cma = 0,
 	.no_nonsecure_alloc = 1,
 };
 
@@ -2851,7 +2851,7 @@ static struct gpio_keys_button asustek_keys[] = {
 		.active_low     = 1,
 		.type		= EV_KEY,
 		.wakeup		= 1,
-		.debounce_interval = 15,
+		.debounce_interval = 5,
 	},
 	{
 		.code           = KEY_VOLUMEUP,
@@ -2860,7 +2860,7 @@ static struct gpio_keys_button asustek_keys[] = {
 		.active_low     = 1,
 		.type		= EV_KEY,
 		.wakeup		= 0,
-		.debounce_interval = 15,
+		.debounce_interval = 5,
 	},
 	{
 		.code           = KEY_VOLUMEDOWN,
@@ -2869,7 +2869,7 @@ static struct gpio_keys_button asustek_keys[] = {
 		.active_low     = 1,
 		.type		= EV_KEY,
 		.wakeup		= 0,
-		.debounce_interval = 15,
+		.debounce_interval = 5,
 	},
 };
 
