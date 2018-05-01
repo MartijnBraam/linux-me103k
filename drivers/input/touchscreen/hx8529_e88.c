@@ -417,7 +417,7 @@ static unsigned char i_isTP_Updated = 0;
 static unsigned char i_CTPM_FW[]=
 {
 #ifdef	TOUCH_SECOND_SOURCE
-#include "ME103K_E0120_00_04.h"
+#include "ME103K_E0120_00_06.h"
 #else
 #include "TF303K_E0111_00_1F_20141030.h"
 #endif

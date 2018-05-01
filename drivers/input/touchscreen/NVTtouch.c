@@ -1648,8 +1648,8 @@ if(1) //asus-eko:patch HW reset
 
  	if(tp_id == 0 && tp_id1 == 0){
  		if(Check_FW_Ver(ts , &FWversion,Check_TP_Vendor(ts)) > 0){
-			if (FWversion != LATEST_FW) {
-				NVT_NOTICE("novtek: FWversion != V05.\n");
+			if (FWversion < LATEST_FW) {
+				NVT_NOTICE("novtek: FWversion < V%02d", LATEST_FW);
 				Update_Firmware(ts,BUFFER_DATA_NOVTEK,28*1024);
 			} else if (Check_TP_Vendor(ts) == UNKNOWN_VENDOR) {
 				NVT_ERR("UNKNOWN_VENDOR, update firmware: novtek\n");
